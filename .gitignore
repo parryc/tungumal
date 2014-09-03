@@ -1,3 +1,6 @@
+# Since this is CoffeeScript ignore compiled JavaScript
+src/*.js
+
 # Logs
 logs
 *.log
@@ -36,7 +39,8 @@ node_modules
 .LSOverride
 
 # Icon must ends with two \r.
-Icon
+Icon
+
 
 # Thumbnails
 ._*

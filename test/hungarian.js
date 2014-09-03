@@ -21,8 +21,7 @@ before(function() {
 		    "palatals": "jl(ly)n(ny)r"
 		  }
 		});
-	console.log(hun);
-	console.log('tits');
+
 	hun.wordConfig('noun',['nmap1','nmap2']);
 	hun.wordConfig('verb',['vmap1','vmap2']);
 

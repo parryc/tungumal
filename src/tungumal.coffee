@@ -21,11 +21,11 @@ class Lexr
     wordAttributes = {}
     if _typeIsArray attributes
       for el, idx in attributes
-        wordAttributes[type][@wordAttributesMap[idx]] = el
+        wordAttributes[@wordAttributesMap[type][idx]] = el
     else
       wordAttributes = attributes
 
-    @words[word] = new Word(word, wordAttributes)
+    @words[word] = new Word(word, wordAttributes, @orthography)
 
   addN: (word, attributes) ->
     @add(word, 'noun', attributes)
@@ -43,12 +43,12 @@ class Word
       @[key] = option
 
   has: (type, needle) ->
-    if type is 'othography'
-      @.match(@_getOrthographyRegExp(needle,true))
+    if type is 'orthography'
+      @_getOrthographyRegExp(needle,false).test(@lemma)
 
   doesNotHave: (type, needle) ->
-    if type is 'othography'
-      !@.match(@_getOrthographyRegExp(needle,true))
+    if type is 'orthography'
+      !@has(type, needle)
 
   #returns list of graphs based on path in dot form
   #ex: vowels.front.unrounded
