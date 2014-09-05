@@ -26,6 +26,13 @@ class Lexr
     else
       wordAttributes = attributes
 
+    if type is 'noun'
+      wordAttributes.number = 's'
+      wordAttributes.case = 'nom'
+    if type is 'verb'
+      wordAttributes.person = ''
+      wordAttributes.tense = 'inf'
+      
     @words[word] = new Word(word, wordAttributes, @orthography)
 
   addN: (word, attributes) ->
@@ -42,6 +49,7 @@ class Word
   constructor: (@lemma,options,@orthography) ->
     for key, option of options
       @[key] = option
+
 
   has: (type, needle) ->
     if type is 'orthography'
