@@ -7,6 +7,7 @@ class Lexr
 
   words: {}
   wordAttributesMap: []
+  wordConfigurableAttributes: {}
   # internal util   
   
   _typeIsArray = Array.isArray || ( value ) -> return {}.toString.call( value ) is '[object Array]'   
