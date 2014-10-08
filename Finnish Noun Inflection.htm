@@ -1,0 +1,918 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Finnish Noun Inflection</title>
+</head>
+<body>
+<h3 style="text-align: center;">Finnish Noun Inflection</h3>
+The goal of this excercise is to build
+a lexicon that contains Finnish
+nouns inflected for number and case. To keep the problem reasonably
+small, we consider only three cases: Nominative, Genitive, and
+Partitive and two optional clitics. For the same reason, we only
+consider two types of nouns: monosyllabic and some bisyllabic stems.
+Even with these limitations, the problem is challenging because the
+shape of the endings depends on the shape of the stem and the stems are
+subject to several regular alternations such as <span
+ style="font-style: italic;">Vowel Harmony</span> and <span
+ style="font-style: italic;">Consonant Gradation</span>, and a number
+of other phenomena. This excercise assumes that the students is very
+familiar with <span style="font-weight: bold;">xfst</span> replace
+rules and the syntax of <span style="font-weight: bold;">lexc</span>
+source files.<br>
+<h3>The Facts<br>
+</h3>
+A Finnish noun begins with a stem. In all of the cases below, the stem
+is identical with the nominative singular. A plural marker, if any,
+immediately follows the stem. After the stem and the possible plural
+marker comes one of several possible case endings. We consider only
+three cases: Nominative, Partitive and Genitive. For the purpose of
+this excercise we, assume that the plural and case endings are the
+following:<br>
+<div style="margin-left: 40px;"><br>
+<table style="width: 40%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <caption align="bottom"><br>
+Table 1: Plural, Genitive, and Partitive Markers<br>
+  </caption> <tbody>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">t<br>
+      </td>
+      <td style="vertical-align: top;">Nominative Plural marker<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">I<br>
+      </td>
+      <td style="vertical-align: top;">Plural marker for other cases,
+realized as <span style="font-style: italic;">i</span> or <span
+ style="font-style: italic;">j</span><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">n<br>
+      </td>
+      <td style="vertical-align: top;">Genitive Singular marker<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">Ten<br>
+      </td>
+      <td style="vertical-align: top;">Genitive Plural marker, realized
+as <span style="font-style: italic;">ten</span>, <span
+ style="font-style: italic;">den</span>, or <span
+ style="font-style: italic;">en</span><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">TA<br>
+      </td>
+      <td style="vertical-align: top;">Partitive Marker marker,
+realized as <span style="font-style: italic;">ta</span>, <span
+ style="font-style: italic;">t&auml;</span>, <span
+ style="font-style: italic;">a</span>, or <span
+ style="font-style: italic;">&auml;</span>.<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<br>
+There are numerous clitics that attach to the end of the word after the
+case ending. Here we only consider two of them.<br>
+<br>
+<div style="margin-left: 40px;"><br>
+<table style="width: 40%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <caption align="bottom"><br>
+Table 2: Clitics<br>
+  </caption> <tbody>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">kO<br>
+      </td>
+      <td style="vertical-align: top;">Question clitic, realized as <span
+ style="font-style: italic;">ko</span> or <span
+ style="font-style: italic;">k&ouml;</span><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">hAn<br>
+      </td>
+      <td style="vertical-align: top;">Politeness clitic, realized as <span
+ style="font-style: italic;">han</span> or <span
+ style="font-style: italic;">h&auml;n</span><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<br>
+The following table illustrates some of the possible combinations with
+the noun <span style="font-style: italic;">valo</span> 'light'.<br>
+<br>
+<div style="margin-left: 40px;"><br>
+<table style="text-align: left; width: 734px; height: 172px;" border="1"
+ cellpadding="2" cellspacing="2">
+  <caption align="bottom"><br>
+Table 3: Examples illustrating morphotactics with <span
+ style="font-style: italic;">valo</span> 'light'.<br>
+  </caption> <tbody>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">valo</td>
+      <td style="vertical-align: top;">Nominative Singular. No
+case ending</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">valot<br>
+      </td>
+      <td style="vertical-align: top;">Nominative Plural. The general
+plural marker <span style="font-style: italic;">I</span> is not used
+in the nominative.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">valoa</td>
+      <td style="vertical-align: top;">Partitive Singular. The
+partitive marker&nbsp; <span style="font-style: italic;">TA</span> is
+realized here as <span style="font-style: italic;">a</span></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">valon</td>
+      <td style="vertical-align: top;">Genitive Singular</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">valoja</td>
+      <td style="vertical-align: top;">Partitive Plural. The plural
+marker I is realized as <span style="font-style: italic;">j</span>
+here. The&nbsp; partitive&nbsp; marker&nbsp; <span
+ style="font-style: italic;">TA</span> is&nbsp; realized here as <span
+ style="font-style: italic;">a</span>. </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">valojen</td>
+      <td style="vertical-align: top;">Genitive Plural. The plural <span
+ style="font-style: italic;">I</span> is
+realized as <span style="font-style: italic;">j</span> here. The
+Plural Genitive maker <span style="font-style: italic;">Ten </span>is
+realized as <span style="font-style: italic;">en.</span><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">valoko<br>
+      </td>
+      <td style="vertical-align: top;">Nominative Singular with the
+question clitic.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">valonhan<br>
+      </td>
+      <td style="vertical-align: top;">Genitive Singular with the
+politeness clitic.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">valoakohan<br>
+      </td>
+      <td style="vertical-align: top;">Partitive Singular with the
+question and politeness clitics.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">valojenkohan<br>
+      </td>
+      <td style="vertical-align: top;">Genitive Plural with the
+question and politeness clitics.<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<br>
+Note that the order of the two optional clitics is fixed.&nbsp;
+The form <span style="font-style: italic;">valohanko</span> is a
+possible word in Finnish but it is interpretable only as a compound
+noun: <span style="font-style: italic;">valo</span> 'light' + <span
+ style="font-style: italic;">hanko</span> 'pitchfork'.<br>
+<br>
+Finnish is a language with vowel harmony. The realization of <span
+ style="font-style: italic;">A</span> and <span
+ style="font-style: italic;">O</span> in the first two tables depends
+on the previous "harmonizing vowel".&nbsp; Finnish has eight vowels: <span
+ style="font-style: italic;">a</span>,
+<span style="font-style: italic;">e</span>, <span
+ style="font-style: italic;">i</span>, <span
+ style="font-style: italic;">o</span>, <span
+ style="font-style: italic;">u</span>, <span
+ style="font-style: italic;">y</span>, <span
+ style="font-style: italic;">&auml;</span>, and <span
+ style="font-style: italic;">&ouml;</span>. The back vowels <span
+ style="font-style: italic;">a</span>, <span
+ style="font-style: italic;">o</span>, <span
+ style="font-style: italic;">u</span> and the front
+vowels <span style="font-style: italic;">&auml;</span>, <span
+ style="font-style: italic;">&ouml;</span>, <span
+ style="font-style: italic;">y</span> are harmonizing vowels, The two
+remaining
+ones, <span style="font-style: italic;">e</span> and <span
+ style="font-style: italic;">i</span>, are neutral.&nbsp; For the
+purpose of this excercise, assume the following Vowel Harmony rule:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">A
+-&gt; a, O -&gt; o || [a|o|u] ~$[&auml;|&ouml;|y] _</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; .o.</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">A -&gt; &auml;, O -&gt; &ouml;</span>.<br>
+</div>
+<br>
+The realization of the <span style="font-style: italic;">T</span> in
+the Genitive Plural and the Partitive marker depends on the syllable
+structure of the word. After a monosyllabic stem such as <span
+ style="font-style: italic;">maa</span> 'earth', the <span
+ style="font-style: italic;">T</span> is realized as <span
+ style="font-style: italic;">t</span> as in <span
+ style="font-style: italic;">maata</span>. After a bisyllabic stem such
+as <span style="font-style: italic;">valo</span> 'light', the <span
+ style="font-style: italic;">T</span> disappears as in <span
+ style="font-style: italic;">valoa</span>. In cases where the <span
+ style="font-style: italic;">T</span> in Genitive Plural marker is
+realized as <span style="font-style: italic;">t</span>, it is subject
+to the consonant gradation rules and surfaces as <span
+ style="font-style: italic;">d</span> in most cases.<br>
+<br>
+The plural marker <span style="font-style: italic;">I</span> is
+realized as <span style="font-style: italic;">j</span> between two
+vowels, otherwise it is realized as <span style="font-style: italic;">i</span>.<br>
+<br>
+With this information you should be able to write the rules that
+correctly realize the six endings in all environments.<br>
+<br>
+The remaining problem is that the stem of the noun also undergoes
+alternations.&nbsp;<a href="./FinnishConsonantGradation.html">Consonant
+Gradation</a> is one that we have already seen and solved. The other
+stem alternations<span style="font-weight: bold;">, </span><span
+ style="font-style: italic;">Vowel
+Rounding</span>, <span style="font-style: italic;">Vowel Lowering,</span>
+<span style="font-style: italic;">Vowel Dropping</span>, and <span
+ style="font-style: italic;">Vowel Shortening </span>are illustrated
+in
+Table 4 below.<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <caption align="bottom"><br>
+Table 4: Stem and suffix alternations </caption> <tbody>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">Nom Sg<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">Gloss<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">Nom Pl<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">Gen Sg<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">Part Sg<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">Gen Pl<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">Part Pl<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">puu<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">tree<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">puut<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">puun<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">puuta<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">puiden<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">puita<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">maa<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">earth<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">maat<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">maan<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">maata<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">maiden<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">maita<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">p&auml;&auml;<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">head<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">p&auml;&auml;t<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">p&auml;&auml;n<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">p&auml;&auml;t&auml;<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">p&auml;iden<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">p&auml;it&auml;<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">syy<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">reason<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">syyt<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">syyn<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">syyt&auml;<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">syiden<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">syit&auml;<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">pii<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">silicon<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">piit<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">piin<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">piit&auml;<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">piiden<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">piit&auml;<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">suo<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">swamp<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">suot<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">suon<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">suota<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">soiden<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">soita<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">ty&ouml;<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">work<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">ty&ouml;t<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">ty&ouml;n<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">ty&ouml;t&auml;<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">t&ouml;iden<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">t&ouml;it&auml;<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">tie<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">road<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">tiet<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">tien<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">tiet&auml;<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">teiden<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">teit&auml;<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">tikka<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">dart<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">tikat<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">tikan<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">tikkaa<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">tikkojen<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">tikkoja<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">pappi<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">priest<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">papit<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">papin<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">pappia<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">pappien<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">pappeja<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">hytti<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">cabin<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">hytit<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">hytin<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">hytti&auml;<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">hyttien<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">hyttej&auml;<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">kukka<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">flower<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kukat<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kukan<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kukkaa<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kukkien<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kukkia<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">tutti<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">pacifier<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">tutit<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">tutin<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">tuttia<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">tuttien<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">tutteja<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">kauppa<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">shop<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kaupat<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kaupan<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kauppaa<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kauppojen<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kauppoja<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">kuoppa<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">hole<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kuopat<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kuopan<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kuoppaa<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kuoppien<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kuoppia<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">jalka<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">foot<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">jalat<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">jalan<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">jalkaa<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">jalkojen<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">jalkoja<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">h&auml;rk&auml;<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">ox<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">h&auml;r&auml;t<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">h&auml;r&auml;n<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">h&auml;rk&auml;&auml;<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">h&auml;rkien<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">h&auml;rki&auml;<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">linko<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">sling<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">lingot<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">lingon<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">linkoa<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">linkojen<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">linkoja<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">kyky<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">talent<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kyvyt<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kyvyn<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kyky&auml;<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kykyjen<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kykyj&auml;<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">sopu<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">harmony<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">sovut<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">sovun<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">sopua<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">sopujen<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">sopuja<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">kampa<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">comb<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kammat<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kamman<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kampaa<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kampojen<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">kampoja<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">piispa<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">bishop<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">piispat<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">piispan<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">piispaa<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">piispojen<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">piispoja<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">vahti<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">guard<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">vahdit<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">vahdin<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">vahtia<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">vahtien<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">vahteja<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">ilta<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">evening<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">illat<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">illan<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">iltaa<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">iltojen<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">iltoja<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">sota<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">war<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">sodat<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">sodan<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">sotaa<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">sotien<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">sotia<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">h&auml;nt&auml;<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">tail<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">h&auml;nn&auml;t<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">h&auml;nn&auml;n<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">h&auml;nt&auml;&auml;<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">h&auml;ntien<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">h&auml;nti&auml;<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h4>Vowel Rounding</h4>
+Short <span style="font-style: italic;">a</span> is rounded to an <span
+ style="font-style: italic;">o</span> in front of the plural marker<span
+ style="font-style: italic;"></span> <span style="font-style: italic;">I</span>.
+Examples: <span style="font-style: italic;">tikkaa</span> Partitive
+Singular, <span style="font-style: italic;">tikkoja</span> Partitive
+Plural, <span style="font-style: italic;">kamman</span> Genitive
+Singular, <span style="font-style: italic;">kampojen</span> Genitive
+Plural, <span style="font-style: italic;">kauppaa</span> Partitive
+Singular, <span style="font-style: italic;">kauppoja</span> Partitive
+Plural. This does
+not happen if the vowel nucleus of the preceding syllable starts with a
+rounded vowel (<span style="font-style: italic;">o</span> or <span
+ style="font-style: italic;">u</span>). See the rule
+for Vowel Dropping.<br>
+<h4>Vowel Lowering</h4>
+Short <span style="font-style: italic;">i</span> is lowered to <span
+ style="font-style: italic;">e</span> in front of the plural marker <span
+ style="font-style: italic;">I</span>. Examples: <span
+ style="font-style: italic;">vahtia</span> Partitive Singular, <span
+ style="font-style: italic;">vahteja</span> Partitive Plural, <span
+ style="font-style: italic;">pappia</span> Partitive Singular, <span
+ style="font-style: italic;">pappeja</span> Partive Plural. This does
+not happen in the Genitive Plural. See the rule for Vowel Dropping.<br>
+<h4>Vowel Dropping</h4>
+A short <span style="font-style: italic;">a</span> is deleted in front
+of the plural marker <span style="font-style: italic;">I</span> if the
+nucleus of the preciding syllable consists of, or begins with, a
+rounded vowel (<span style="font-style: italic;">u</span> or <span
+ style="font-style: italic;">o</span>). Note the different behavior of <span
+ style="font-style: italic;">kuoppa</span> where the <span
+ style="font-style: italic;">a</span> is dropped and <span
+ style="font-style: italic;">kauppa</span> where the <span
+ style="font-style: italic;">a</span> is rounded to <span
+ style="font-style: italic;">o</span> in the plural. Short <span
+ style="font-style: italic;">&auml;</span> is always deleted in front
+of the plural marker <span style="font-style: italic;">I</span>.
+Examples: <span style="font-style: italic;">kukan</span>
+Genitive Singular, <span style="font-style: italic;">kukkien</span>
+Genitive Plural, <span style="font-style: italic;">sotaa</span>
+Partitive Singular, <span style="font-style: italic;">sotia</span>
+Partitive Plural, <span style="font-style: italic;">kuoppaa</span>
+Partitive Singular, <span style="font-style: italic;">kuoppia</span>
+Partitive Plural, <span style="font-style: italic;">h&auml;r&auml;n</span>
+Genitive Singular, <span style="font-style: italic;">h&auml;rkien</span>
+Genitive Plural. Stem-final <span style="font-style: italic;">i</span>
+is dropped in the Genitive Plural. Examples: <span
+ style="font-style: italic;">papin</span> Genitive Singular, <span
+ style="font-style: italic;">pappien</span> Genitive Plural, <span
+ style="font-style: italic;">vahdin</span> Genitive Singular, <span
+ style="font-style: italic;">vahtien</span> Genitive Plural.<br>
+<h4>Vowel Shortening</h4>
+In front of the plural marker <span style="font-style: italic;">I</span>,
+the long vowels <span style="font-style: italic;"></span><span
+ style="font-style: italic;"></span><span style="font-style: italic;">aa</span>,
+<span style="font-style: italic;">ee, ii, oo, uu, yy, &auml;&auml;</span>,
+<span style="font-style: italic;">&ouml;&ouml;</span>, are shortened to
+<span style="font-style: italic;"></span><span
+ style="font-style: italic;"></span><span style="font-style: italic;">a</span>,
+<span style="font-style: italic;">e, i, o, u, y, &auml;</span>, <span
+ style="font-style: italic;">&ouml;</span>,<span
+ style="font-style: italic;"></span> respectively. The diphthongs <span
+ style="font-style: italic;">uo</span>, <span
+ style="font-style: italic;">y&ouml;</span>, and <span
+ style="font-style: italic;">ie</span> shorten to <span
+ style="font-style: italic;">o</span>, <span
+ style="font-style: italic;">&ouml;</span>, and <span
+ style="font-style: italic;">e</span>, respectively. Examples: <span
+ style="font-style: italic;">puuta</span> Partitive Singular, <span
+ style="font-style: italic;">puita</span> Partitive Plural, <span
+ style="font-style: italic;">tiet&auml;</span> Partitive Singular, <span
+ style="font-style: italic;">teit&auml;</span> Partitive Plural, <span
+ style="font-style: italic;">ty&ouml;n</span> Genitive Singular, <span
+ style="font-style: italic;">t&ouml;iden</span> Genitive Plural.
+<br>
+<h3>The Task</h3>
+<span style="font-weight: bold;">Your task is to write a lexicon, a
+source file to lexc, that includes the 27 words, 4
+suffixes and 2 clitics mentioned above and assembles them into
+morphotactically correct underlying Finnish forms. User the tags </span><span
+ style="font-family: monospace; font-weight: bold;">+Sg</span><span
+ style="font-weight: bold;">, </span><span
+ style="font-family: monospace; font-weight: bold;">+Pl</span><span
+ style="font-weight: bold;">, </span><span
+ style="font-family: monospace; font-weight: bold;">+Nom</span><span
+ style="font-weight: bold;">, </span><span
+ style="font-family: monospace; font-weight: bold;">+Gen</span><span
+ style="font-weight: bold;">, </span><span
+ style="font-family: monospace; font-weight: bold;">+Part</span><span
+ style="font-weight: bold;"> for
+marking number and case on the lexical side, and </span><span
+ style="font-family: monospace; font-weight: bold;">+Q</span><span
+ style="font-weight: bold;">, </span><span
+ style="font-family: monospace; font-weight: bold;">+P</span><span
+ style="font-weight: bold;"> for the
+question and politeness clitics. Compile using lexc or the command </span><span
+ style="font-family: monospace; font-weight: bold;">read lex</span><span
+ style="font-weight: bold;"> in xfst. At this point your network
+should contain pairs such as</span><br style="font-weight: bold;">
+<br style="font-family: monospace; font-weight: bold;">
+<div style="margin-left: 40px;"><span
+ style="font-family: monospace; font-weight: bold;">kukka+Sg+Part&nbsp;&nbsp;&nbsp;
+tutti+Pl+Gen&nbsp;&nbsp;&nbsp; jalka+Pl+Part&nbsp;&nbsp;
+h&auml;rk&auml;+Pl+Gen&nbsp;&nbsp;&nbsp; tie+Pl+Part</span><br
+ style="font-family: monospace; font-weight: bold;">
+<span style="font-family: monospace; font-weight: bold;">kukka&nbsp;&nbsp;&nbsp;
+TA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tutti I&nbsp; Ten&nbsp;&nbsp;&nbsp;
+jalka I&nbsp; TA&nbsp;&nbsp;&nbsp;&nbsp; h&auml;rk&auml; I&nbsp;
+Ten&nbsp;&nbsp;&nbsp; tie I&nbsp; TA</span><br>
+</div>
+<br>
+<span style="font-weight: bold;">Secondly, write replace rules for
+realizing the plural marker, the case
+endings, and the four stem-changing rules sketched above. Use the Vowel
+Harmony Rule shown above.&nbsp; Combine the suffix realization rules
+with&nbsp; the stem&nbsp; alternation&nbsp; rules&nbsp; sketched above.
+For consonant gradation, use the rule given in the </span><span
+ style="text-decoration: underline; font-weight: bold;"><a
+ href="../examples/FinnishConsonantGradation.html">Gradation script</a></span><span
+ style="font-weight: bold;">.
+Think about how to
+order the rules. It matters.</span><br style="font-weight: bold;">
+<br>
+<span style="font-weight: bold;">Finally, create an xfst script
+that reads in the lexicon, compiles the rules, and composes the lexicon
+with the rules leaving the result on the stack.&nbsp; The final result
+should contain pairs such as</span><br style="font-weight: bold;">
+<br>
+<div style="margin-left: 40px;"><span
+ style="font-family: monospace; font-weight: bold;">kukka+Sg+Part&nbsp;&nbsp;&nbsp;
+tutti+Pl+Gen&nbsp;&nbsp;&nbsp; jalka+Pl+Part&nbsp;&nbsp;&nbsp;
+h&auml;rk&auml;+Pl+Gen&nbsp;&nbsp;&nbsp; tie+Pl+Part</span><br
+ style="font-family: monospace; font-weight: bold;">
+<span style="font-family: monospace; font-weight: bold;">kukka&nbsp;&nbsp;&nbsp;&nbsp;
+a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tutt&nbsp; i&nbsp;&nbsp;
+en&nbsp;&nbsp;&nbsp; jalko j&nbsp;&nbsp; a
+&nbsp;&nbsp;&nbsp;&nbsp; h&auml;rk&nbsp; i&nbsp;&nbsp;
+en&nbsp;&nbsp;&nbsp; te&nbsp; i&nbsp; t&auml;</span><br>
+</div>
+<span style="font-weight: bold;">etc.</span><br>
+<br>
+<span style="font-weight: bold;">Verfify that the lower side of the
+lexicon contains the properly
+inflected surface forms by terminating the script with the command</span><br
+ style="font-weight: bold;">
+<br style="font-family: monospace; font-weight: bold;">
+<div style="margin-left: 40px;"><span
+ style="font-family: monospace; font-weight: bold;">print random-lower</span><br>
+</div>
+<br>
+<br>
+</body>
+</html>
