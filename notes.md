@@ -33,10 +33,12 @@
 			'2s':[
 				"<consonants>{2}.;+Vsz; V > a,e,e",
 				"<vowels.long>t.;+Vsz; V > a,e,e,",
-				"<sibilants>.;+vl; V> o,e,ö",
+				"<sibilants>.;+Vl; V> o,e,ö",
 				";+sz;"
 			]
 		})
+
+		lexr.w('ért').1s().present()
 
 		//add a stemmer.
 		lexr.stem('verb','remove en');
@@ -90,6 +92,7 @@ lexr.lemma('noun',{
 	'case':'nom'
 })
 
+maybe -- lexr.nouns.addRule() and lexr.verbs.addRule()
 lexr.addRule('p','!!nom',';+I')
 lexr.addRule('ptv',";+Ta",'noun','number')
 number would be default for noun, person for verbs?
